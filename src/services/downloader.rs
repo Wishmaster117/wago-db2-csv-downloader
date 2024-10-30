@@ -6,6 +6,7 @@ use tokio::time::Duration;
 use crate::utils::RateLimiter;
 use crate::entities::Build;
 use std::collections::HashSet;
+use crate::utils::{file_exists_with_size, ensure_dir_exists};
 
 pub struct DownloadService {
     client: Client,
@@ -42,18 +43,23 @@ impl DownloadService {
         locale: &str,
     ) -> Result<()> {
         self.rate_limiter.wait().await;
-
+    
         let url = format!(
             "{}/{}/csv?build={}&locale={}",
             self.base_url, table, build.format_full_version(), locale
         );
-
-        println!("Downloading: {}", url);
-
+    
         let folder_path = Path::new(&build.format_full_version()).join(locale);
-        fs::create_dir_all(&folder_path)?;
-        
         let file_path = folder_path.join(format!("{}.csv", table));
+    
+        if file_exists_with_size(&file_path) {
+            println!("Skipping an existing file: {}", file_path.display());
+            return Ok(());
+        }
+    
+        println!("Downloading: {}", url);
+    
+        ensure_dir_exists(&folder_path)?;
         
         let response = self.client.get(&url)
             .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
@@ -242,5 +248,31 @@ mod tests {
         
         std::env::set_current_dir(original_dir).unwrap();
         assert!(result.is_ok());
+    }
+
+    #[tokio::test]
+    async fn test_skip_existing_file() {
+        let mock_server = mockito::Server::new();
+        let _m = create_mock_response(200, "id,name\n1,Test");
+        
+        let temp_dir = TempDir::new().unwrap();
+        let original_dir = std::env::current_dir().unwrap();
+        std::env::set_current_dir(&temp_dir).unwrap();
+
+        let folder_path = temp_dir.path().join("11.0.5.57212").join("ruRU");
+        fs::create_dir_all(&folder_path).unwrap();
+        let file_path = folder_path.join("Achievement.csv");
+        fs::write(&file_path, "existing content").unwrap();
+
+        let mut service = DownloadService::new(mock_server.url()).unwrap();
+        let build = create_test_build();
+        
+        let result = service.download_csv("Achievement", &build, "ruRU").await;
+        
+        std::env::set_current_dir(original_dir).unwrap();
+        assert!(result.is_ok());
+        
+        let content = fs::read_to_string(file_path).unwrap();
+        assert_eq!(content, "existing content");
     }
 }

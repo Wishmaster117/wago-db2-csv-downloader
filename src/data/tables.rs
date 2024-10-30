@@ -2,7 +2,6 @@ use std::collections::HashSet;
 
 pub fn get_available_tables() -> HashSet<String> {
     HashSet::from([
-        "_root".to_string(),
         "Achievement".to_string(),
         "Achievement_Category".to_string(),
         "ActionBarGroup".to_string(),
@@ -510,7 +509,6 @@ pub fn get_available_tables() -> HashSet<String> {
         "NamesReservedLocale".to_string(),
         "NumTalentsAtLevel".to_string(),
         "ObjectEffect".to_string(),
-        "ObjectEffectGroup".to_string(),
         "ObjectEffectModifier".to_string(),
         "ObjectEffectPackageElem".to_string(),
         "Occluder".to_string(),
