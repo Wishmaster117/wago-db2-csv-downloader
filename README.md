@@ -1,3 +1,5 @@
+<img src="/.github/assets/demo.gif" alt="Demo">
+
 ## 📄 About
 A fast, concurrent CSV downloader for World of Warcraft DB2 data from [wago.tools](https://wago.tools).
 
