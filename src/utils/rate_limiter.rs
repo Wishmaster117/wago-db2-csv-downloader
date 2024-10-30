@@ -1,7 +1,7 @@
 use std::time::{Duration, Instant};
 use tokio::time::sleep;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct RateLimiter {
     requests_per_minute: u32,
     last_request: Instant,
