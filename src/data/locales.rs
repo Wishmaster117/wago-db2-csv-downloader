@@ -12,4 +12,4 @@ pub const AVAILABLE_LOCALES: &[&str] = &[
     "zhTW",
 ];
 
-pub const DEFAULT_LOCALES: &[&str] = &["ruRU", "enUS"];
+pub const DEFAULT_LOCALES: &[&str] = &["frFR", "esES", "enUS"];

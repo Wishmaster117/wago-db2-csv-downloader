@@ -859,7 +859,7 @@ pub fn get_available_tables() -> HashSet<String> {
 
 use std::collections::HashSet;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Table {
     pub name: String,
     pub has_locale: bool,

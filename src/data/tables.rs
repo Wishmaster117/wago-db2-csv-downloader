@@ -861,13 +861,15 @@ mod tests {
 
     #[test]
     fn test_tables_not_empty() {
-        assert!(!AVAILABLE_TABLES.is_empty());
+        let tables = get_available_tables();
+        assert!(!tables.is_empty());
     }
 
     #[test]
     fn test_contains_basic_tables() {
-        assert!(AVAILABLE_TABLES.contains("Achievement"));
-        assert!(AVAILABLE_TABLES.contains("Item"));
-        assert!(AVAILABLE_TABLES.contains("Spell"));
+        let tables = get_available_tables();
+        assert!(tables.contains("Achievement"));
+        assert!(tables.contains("Item")); // Vérifiez que "Item" est bien présent dans la liste
+        assert!(tables.contains("Spell")); // Vérifiez que "Spell" est bien présent dans la liste
     }
 }
