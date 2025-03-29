@@ -12,21 +12,18 @@ A fast, concurrent CSV downloader for World of Warcraft DB2 data from [wago.tool
 - 🎮 Interactive build selection
 - ⚡ Rate limiting to prevent server overload
 
+Pour compiler.
+Dans le terminal:
+cargo clean
+
 Ajouter la cible 32 bits MSVC
-Dans votre terminal, exécutez :
+Dans votre terminal, exécutez : rustup target add i686-pc-windows-msvc
 
-bash
-Copier
-rustup target add i686-pc-windows-msvc
 Compiler pour la cible 32 bits
-Ensuite, compilez en spécifiant la cible :
+Ensuite, compilez en spécifiant la cible : cargo build --release --target=i686-pc-windows-msvc
 
-bash
-Copier
-cargo build --release --target=i686-pc-windows-msvc
-Cela créera l'exécutable dans le dossier :
+Cela créera l'exécutable dans le dossier : cargo build --release --target=i686-pc-windows-msvc
 
-arduino
-Copier
+l'exe est mis dans
 target\i686-pc-windows-msvc\release\
 
